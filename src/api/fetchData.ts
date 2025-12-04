@@ -1,7 +1,7 @@
 import { baseUrl } from "../constant/baseUrl";
 import type { ApiResponse } from "../types/types";
-
-export const postData = async <T>(
+import Cookies from "js-cookie";
+export const fetchFunc = async <T>(
   url: string,
   method: string,
   body?: any,
@@ -13,20 +13,12 @@ export const postData = async <T>(
     const response = await fetch(`${baseUrl}/api/dashboard/${url}`, {
       method,
       headers: {
-        ...(isFormData
-          ? {
-              "Authorization": "Bearer 14|5Iiqm1DozSibgnjOqCTaXFaMXzj5H8ghCkLJVNRd0cd71dd1",
-               'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          : {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              "Authorization": "Bearer 14|5Iiqm1DozSibgnjOqCTaXFaMXzj5H8ghCkLJVNRd0cd71dd1",
-            }),
-        ...(options?.headers || {}),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Authorization": `${Cookies.get("token") ? `Bearer ${Cookies.get("token")}` : ""}`,
       },
+      ...(options?.headers || {}),
       body: isFormData ? body : body ? JSON.stringify(body) : undefined,
-      credentials: "include",
       ...options,
     });
 

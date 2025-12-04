@@ -4,10 +4,10 @@ import NavBar from '../../components/navBar/NavBar'
 import PopUp from '../../components/popUp/PopUp';
 import CircularProgress from '../../components/progressBar/CircularProgress';
 import Table from '../../components/Table/Table';
-import { postData } from '../../api/postData';
 import { useEffect, useState } from 'react';
 import type { Package, Provider } from '../../types/types';
 import AddProvider from '../../components/forms/AddProvider';
+import { fetchFunc } from '../../api/fetchData';
 
 export default function Providres() {
   const [providers, setProviders] = useState<Provider[]>()
@@ -29,11 +29,11 @@ export default function Providres() {
   }
 
   const fetchData = async () => {
-    const data = await postData<Provider[]>("providers", "get")
+    const data = await fetchFunc<Provider[]>("providers", "get")
     setProviders(data.data)
   }
   const fetchDatapackages = async () => {
-    const data = await postData<Package[]>("packages", "get")
+    const data = await fetchFunc<Package[]>("packages", "get")
     setPackages(data.data)
   }
 

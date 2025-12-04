@@ -1,7 +1,7 @@
 
 import { MdAddCircle } from 'react-icons/md'
 import { useState } from 'react'
-import { postData } from '../../api/postData'
+import { fetchFunc } from '../../api/fetchData'
 import type { city, region } from '../../types/types'
 import toast from 'react-hot-toast'
 
@@ -15,7 +15,7 @@ export default function AddRegion({ close, fetchData, cities }: { close: () => v
     const handelSubmit = async () => {
         setLoading(true)
         try {
-            const { data: result, error, status } = await postData<region>(
+            const { data: result, error, status } = await fetchFunc<region>(
                 `regions`,
                 "post",
                 ({
@@ -44,6 +44,8 @@ export default function AddRegion({ close, fetchData, cities }: { close: () => v
             close()
             setLoading(false)
             fetchData()
+            setName("")
+            setIdCity(0)
         }
 
 
@@ -61,7 +63,7 @@ export default function AddRegion({ close, fetchData, cities }: { close: () => v
                     className="text-right outline-gray-300 p-2 text-blue-950 h-10 border border-gray-200 shadow rounded-xl"
 
                 >
-                    <option value={""} ></option>
+                    <option value={0} ></option>
                     {
                         cities.map(op => {
                             return <option value={op.id} key={op.id} >

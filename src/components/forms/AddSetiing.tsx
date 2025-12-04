@@ -1,6 +1,6 @@
 import { MdAddCircle } from "react-icons/md";
 import { useState } from "react";
-import { postData } from "../../api/postData";
+import { fetchFunc } from "../../api/fetchData";
 import toast from "react-hot-toast";
 import type { settings } from "../../types/types";
 
@@ -23,7 +23,7 @@ export default function AddSettings({
 
     setLoading(true);
     try {
-      const { data: result, error, status } = await postData<settings>(
+      const { data: result, error, status } = await fetchFunc<settings>(
         "settings", // رابط API الإعدادات
         "post",
         { title, description }
@@ -51,6 +51,8 @@ export default function AddSettings({
       console.error("Exception:", err);
     } finally {
       setLoading(false);
+      setDescription("")
+      setTitle("")
     }
   };
 

@@ -1,6 +1,6 @@
 import { MdAddCircle } from 'react-icons/md';
 import { useState } from 'react';
-import { postData } from '../../api/postData';
+import { fetchFunc } from '../../api/fetchData';
 import type { Package, region } from '../../types/types';
 import toast from 'react-hot-toast';
 
@@ -30,7 +30,7 @@ export default function AddPackage({
 
     setLoading(true);
     try {
-      const { data: result, error, status } = await postData<Package>(
+      const { data: result, error, status } = await fetchFunc<Package>(
         `packages`,
         'post',
         {
@@ -64,6 +64,13 @@ export default function AddPackage({
       console.error('Exception:', err);
     } finally {
       setLoading(false);
+      setDuration("")
+      setLimit("")
+      setName("")
+      setPrice("")
+      setSlug("")
+      setSpeed("")
+      setRegionId(0)
     }
   };
 
@@ -159,7 +166,7 @@ export default function AddPackage({
           value={regionId}
           className="text-right outline-gray-300 p-2 text-blue-950 h-10 border border-gray-200 shadow rounded-xl"
         >
-          <option value="">اختر المنطقة</option>
+          <option value={0}>اختر المنطقة</option>
           {regions.map((op) => (
             <option value={op.id} key={op.id}>
               {op.name}

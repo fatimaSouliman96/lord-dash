@@ -1,7 +1,7 @@
 
 import { MdAddCircle } from 'react-icons/md'
 import { useState } from 'react'
-import { postData } from '../../api/postData'
+import { fetchFunc } from '../../api/fetchData'
 import type { city, region } from '../../types/types'
 import toast from 'react-hot-toast'
 
@@ -32,7 +32,7 @@ export default function EditRegion({
     const handelSubmit = async () => {
         setLoading(true)
         try {
-            const { data: result, error, status } = await postData<region>(
+            const { data: result, error, status } = await fetchFunc<region>(
                 `regions/${id&&Number(id)}`,
                 "put",
                 ({

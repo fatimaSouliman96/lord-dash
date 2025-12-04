@@ -4,7 +4,7 @@ import NavBar from '../../components/navBar/NavBar'
 import PopUp from '../../components/popUp/PopUp';
 import CircularProgress from '../../components/progressBar/CircularProgress';
 import Table from '../../components/Table/Table';
-import { postData } from '../../api/postData';
+import {  fetchFunc } from '../../api/fetchData';
 import { useEffect, useState } from 'react';
 import type { faq } from '../../types/types';
 import AddFAQ from '../../components/forms/AddFaq';
@@ -31,7 +31,7 @@ export default function Faqs() {
   }
 
   const fetchData = async () => {
-    const data = await postData<faq[]>("faqs", "get")
+    const data = await fetchFunc<faq[]>("faqs", "get")
     setFaqs(data.data)
   }
 

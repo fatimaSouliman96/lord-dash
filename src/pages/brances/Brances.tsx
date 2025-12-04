@@ -5,7 +5,7 @@ import PopUp from '../../components/popUp/PopUp';
 import CircularProgress from '../../components/progressBar/CircularProgress';
 import Table from '../../components/Table/Table';
 import { useEffect, useState } from 'react';
-import { postData } from '../../api/postData';
+import {  fetchFunc } from '../../api/fetchData';
 import type { Branch } from '../../types/types';
 import AddBranch from '../../components/forms/AddBranch';
 
@@ -29,7 +29,7 @@ export default function Brances() {
   }
 
   const fetchData = async () => {
-    const data = await postData<Branch[]>("branches", "get")
+    const data = await fetchFunc<Branch[]>("branches", "get")
     setBranch(data.data)
   }
 

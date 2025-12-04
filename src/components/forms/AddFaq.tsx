@@ -1,6 +1,6 @@
 import { MdAddCircle } from "react-icons/md";
 import { useState } from "react";
-import { postData } from "../../api/postData";
+import { fetchFunc } from "../../api/fetchData";
 import toast from "react-hot-toast";
 import type { faq } from "../../types/types";
 
@@ -24,7 +24,7 @@ export default function AddFAQ({
 
     setLoading(true);
     try {
-      const { data: result, error, status } = await postData<faq>(
+      const { data: result, error, status } = await fetchFunc<faq>(
         "faqs", // رابط الـ API الخاص بالأسئلة
         "post",
         { question, answer }
@@ -52,6 +52,8 @@ export default function AddFAQ({
       console.error("Exception:", err);
     } finally {
       setLoading(false);
+      setAnswer("")
+      setQuestion("")
     }
   };
 

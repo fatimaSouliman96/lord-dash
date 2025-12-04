@@ -2,12 +2,12 @@
 import { MdAddCircle } from 'react-icons/md';
 import NavBar from '../../components/navBar/NavBar'
 import Table from '../../components/Table/Table'
-import { getData } from '../../api/getData';
 import { useEffect, useState } from 'react';
 import type { city } from '../../types/types';
 import PopUp from '../../components/popUp/PopUp';
 import CircularProgress from '../../components/progressBar/CircularProgress';
 import AddCity from '../../components/forms/AddCity';
+import { fetchFunc } from '../../api/fetchData';
 
 
 export default function Cities() {
@@ -27,7 +27,7 @@ export default function Cities() {
 
 
   const fetchData = async () => {
-    const data = await getData<city[]>("cities")
+    const data = await fetchFunc<city[]>("cities", "get")
     setCities(data.data)
   }
   useEffect(() => {

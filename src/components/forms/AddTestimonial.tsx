@@ -1,6 +1,6 @@
 import { MdAddCircle } from "react-icons/md";
 import { useState } from "react";
-import { postData } from "../../api/postData";
+import { fetchFunc } from "../../api/fetchData";
 import toast from "react-hot-toast";
 import type { Testimonial } from "../../types/types";
 
@@ -26,7 +26,7 @@ export default function AddTestimonial({
 
     setLoading(true);
     try {
-      const { data: result, error, status } = await postData<Testimonial>(
+      const { data: result, error, status } = await fetchFunc<Testimonial>(
         "testimonials",
         "post",
         {
@@ -56,6 +56,9 @@ export default function AddTestimonial({
       console.error("Exception:", err);
     } finally {
       setLoading(false);
+      setComment("")
+      setName("")
+      setPosition("")
     }
   };
 

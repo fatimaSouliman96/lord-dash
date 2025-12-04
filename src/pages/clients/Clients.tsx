@@ -5,7 +5,7 @@ import PopUp from '../../components/popUp/PopUp';
 import CircularProgress from '../../components/progressBar/CircularProgress';
 import Table from '../../components/Table/Table';
 import { useEffect, useState } from 'react';
-import { postData } from '../../api/postData';
+import { fetchFunc } from '../../api/fetchData';
 import type { Testimonial } from '../../types/types';
 import AddTestimonial from '../../components/forms/AddTestimonial';
 
@@ -29,7 +29,7 @@ export default function Clients() {
     }
   
     const fetchData = async () => {
-      const data = await postData<Testimonial[]>("testimonials", "get")
+      const data = await fetchFunc<Testimonial[]>("testimonials", "get")
       setTestimonial(data.data)
     }
 

@@ -5,7 +5,7 @@ import PopUp from '../../components/popUp/PopUp';
 import CircularProgress from '../../components/progressBar/CircularProgress';
 import Table from '../../components/Table/Table';
 import { useEffect, useState } from 'react';
-import { postData } from '../../api/postData';
+import { fetchFunc } from '../../api/fetchData';
 import type {  Package, region } from '../../types/types';
 import AddPackage from '../../components/forms/AddPackage';
 
@@ -33,11 +33,11 @@ export default function Packges() {
   }
 
   const fetchData = async () => {
-    const data = await postData<Package[]>("packages", "get")
+    const data = await fetchFunc<Package[]>("packages", "get")
     setPackages(data.data)
   }
   const fetchDataRegions = async () => {
-    const data = await postData<region[]>("regions", "get")
+    const data = await fetchFunc<region[]>("regions", "get")
     setRegions(data.data)
   }
 

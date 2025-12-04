@@ -1,6 +1,6 @@
 import { MdAddCircle } from "react-icons/md";
 import { useState } from "react";
-import { postData } from "../../api/postData";
+import { fetchFunc } from "../../api/fetchData";
 import toast from "react-hot-toast";
 import type { Branch } from "../../types/types";
 
@@ -25,7 +25,7 @@ export default function AddBranch({
 
     setLoading(true);
     try {
-      const { data: result, error, status: resStatus } = await postData<Branch>(
+      const { data: result, error, status: resStatus } = await fetchFunc<Branch>(
         "branches",
         "post",
         { name, address, phone, status }
@@ -55,6 +55,11 @@ export default function AddBranch({
       console.error("Exception:", err);
     } finally {
       setLoading(false);
+      setAddress("")
+      setName("")
+      setPhone("")
+      setStatus("")
+
     }
   };
 

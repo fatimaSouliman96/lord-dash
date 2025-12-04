@@ -7,7 +7,7 @@ import Delete from "../forms/Delete";
 import EditRegion from "../forms/EditRegion";
 import EditPackage from "../forms/EditPackage";
 import type { city, Package, region } from "../../types/types";
-import { postData } from "../../api/postData";
+import { fetchFunc } from "../../api/fetchData";
 import toast from "react-hot-toast";
 import EditProvider from "../forms/EditProvider";
 import EditTestimonial from "../forms/EditTestimonial";
@@ -60,7 +60,7 @@ const Table: React.FC<TableProps> = ({
   const deleteElement = async (id: number) => {
     setLoading(true)
     try {
-      const { data: result, error, status } = await postData<city>(
+      const { data: result, error, status } = await fetchFunc<city>(
         `${url}/${id}`, "DELETE")
 
       if (status === 200 && result) {

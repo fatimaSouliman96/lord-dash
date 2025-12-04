@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import NavBar from '../../components/navBar/NavBar'
 import type { settings } from '../../types/types'
-import { postData } from '../../api/postData'
+import { fetchFunc } from '../../api/fetchData'
 import PopUp from '../../components/popUp/PopUp'
 import CircularProgress from '../../components/progressBar/CircularProgress'
 import Table from '../../components/Table/Table'
@@ -28,7 +28,7 @@ export default function Settings() {
 
 
   const fetchData = async () => {
-    const data = await postData<settings[]>("settings", "get")
+    const data = await fetchFunc<settings[]>("settings", "get")
     setInfo(data.data)
   }
 

@@ -1,14 +1,12 @@
 
 import { useEffect, useState } from 'react';
 import NavBar from '../../components/navBar/NavBar'
-import type { city, Package, region } from '../../types/types';
-import { getData } from '../../api/getData';
-import toast from 'react-hot-toast';
+import type { city, region } from '../../types/types';
 import { MdAddCircle } from 'react-icons/md';
 import Table from '../../components/Table/Table';
 import CircularProgress from '../../components/progressBar/CircularProgress';
 import PopUp from '../../components/popUp/PopUp';
-import { postData } from '../../api/postData';
+import { fetchFunc } from '../../api/fetchData';
 import AddRegion from '../../components/forms/AddRegion';
 
 export default function Regions() {
@@ -30,11 +28,11 @@ export default function Regions() {
 
   
   const fetchData = async () => {
-    const data = await postData<region[]>("regions", "get")
+    const data = await fetchFunc<region[]>("regions", "get")
     setRegions(data.data)   
   }
   const fetchDataCities = async () => {
-    const dataCities = await getData<city[]>("cities")
+    const dataCities = await fetchFunc<city[]>("cities", "get")
     setCities(dataCities.data)  
   }
 

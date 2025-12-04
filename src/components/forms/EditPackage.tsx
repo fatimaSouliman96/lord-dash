@@ -1,6 +1,6 @@
 import { MdEdit } from 'react-icons/md';
 import { useState, type ReactNode } from 'react';
-import { postData } from '../../api/postData';
+import { fetchFunc } from '../../api/fetchData';
 import type { Package, region } from '../../types/types';
 import toast from 'react-hot-toast';
 
@@ -32,7 +32,7 @@ export default function EditPackage({
 
     setLoading(true);
     try {
-      const { data: result, error, status } = await postData<Package>(
+      const { data: result, error, status } = await fetchFunc<Package>(
         `packages/${pkg.id}`, // 👈 تعديل حسب id الباقة
         'put', // 👈 استبدال POST بـ PUT
         {

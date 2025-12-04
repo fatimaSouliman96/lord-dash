@@ -1,6 +1,6 @@
 import { MdEdit } from "react-icons/md";
 import { useState } from "react";
-import { postData } from "../../api/postData";
+import { fetchFunc } from "../../api/fetchData";
 import toast from "react-hot-toast";
 import type { Testimonial } from "../../types/types";
 
@@ -26,7 +26,7 @@ export default function EditTestimonial({
 
     setLoading(true);
     try {
-      const { data: result, error, status } = await postData<Testimonial>(
+      const { data: result, error, status } = await fetchFunc<Testimonial>(
         `testimonials/${testimonial.id}`,
         "put", // أو "put" حسب الـ API عندك
         { name, position, comment } // Laravel-friendly update

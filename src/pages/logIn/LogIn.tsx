@@ -2,19 +2,20 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import logo from "../../../public/new-logo.svg";
-import { postData } from "../../api/postData";
 import type { LoginResponse } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "../../components/progressBar/CircularProgress";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
-
+import { fetchFunc } from "../../api/fetchData";
+import Cookies from "js-cookie";
 
 // 🧱 1. إنشاء الـ schema باستخدام Zod
 const loginSchema = z.object({
   email: z.string().email("البريد الإلكتروني غير صالح"),
   password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
+  rememberMe: z.boolean().optional(),
 });
 
 // 🧠 2. إنشاء type تلقائي من الـ schema
@@ -32,18 +33,41 @@ export default function LogIn() {
     resolver: zodResolver(loginSchema),
   });
 
+  // 🔄 فحص الـ localStorage لتسجيل الدخول التلقائي
+  useEffect(() => {
+    const rememberFlag = localStorage.getItem("rememberMeActive");
+    if (rememberFlag === "true") {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
   // 📤 إرسال البيانات
   const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
 
     try {
-      const { data: result, error, status } = await postData<LoginResponse>(
+      const { data: result, error, status } = await fetchFunc<LoginResponse>(
         `login`,
         "post",
         data
       );
 
       if (status === 200 && result) {
+        // خزن التوكن في الكوكيز فقط
+        const cookieOptions = {
+          secure: true,
+          sameSite: "strict" as const,
+          expires: 30, // يمكن تغييرها حسب سياساتك
+        };
+        Cookies.set("token", result.token, cookieOptions);
+
+        // إذا تذكرني مفعل، خزّن علامة في localStorage
+        if (data.rememberMe) {
+          localStorage.setItem("rememberMeActive", "true");
+        } else {
+          localStorage.removeItem("rememberMeActive");
+        }
+
         toast.success("تم تسجيل الدخول بنجاح!");
         navigate("dashboard");
         return;
@@ -65,12 +89,9 @@ export default function LogIn() {
     }
   };
 
-
-
   return (
     <div className="w-full h-screen flex items-center justify-center relative">
       <Toaster position='top-center' />
-      {/* 🔁 Loader يظهر أثناء التحميل */}
       {loading && (
         <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-50">
           <CircularProgress indeterminate color="text-blue-950" />
@@ -120,14 +141,26 @@ export default function LogIn() {
           )}
         </div>
 
+        {/* 🔘 Remember Me */}
+        <div className="flex items-center gap-2 text-right">
+          <input
+            type="checkbox"
+            id="rememberMe"
+            {...register("rememberMe", { setValueAs: v => !!v })}
+            className="h-4 w-4"
+          />
+          <label htmlFor="rememberMe">تذكرني</label>
+        </div>
+
         {/* 🚀 Submit Button */}
         <div className="flex flex-col text-right gap-1 pt-4">
           <input
             id="submit"
             type="submit"
             disabled={loading}
-            className={`text-center p-2 text-white cursor-pointer bg-blue-950 h-10 border border-gray-200 shadow rounded-xl ${loading ? "opacity-60 cursor-not-allowed" : ""
-              }`}
+            className={`text-center p-2 text-white cursor-pointer bg-blue-950 h-10 border border-gray-200 shadow rounded-xl ${
+              loading ? "opacity-60 cursor-not-allowed" : ""
+            }`}
             value={loading ? "جارٍ تسجيل الدخول..." : "تسجيل الدخول"}
           />
         </div>
@@ -135,4 +168,5 @@ export default function LogIn() {
     </div>
   );
 }
+
 

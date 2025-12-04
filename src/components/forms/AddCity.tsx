@@ -2,7 +2,7 @@
 import { MdAddCircle } from 'react-icons/md'
 import { syrianGovernorates } from '../../constant/citiesOptions'
 import { useState } from 'react'
-import { postData } from '../../api/postData'
+import { fetchFunc } from '../../api/fetchData'
 import type { city } from '../../types/types'
 import toast from 'react-hot-toast'
 
@@ -14,7 +14,7 @@ export default function AddCity({close, fetchData} : {close: () => void; fetchDa
     const handelSubmit = async () => {
         setLoading(true)
         try {
-            const { data: result, error, status } = await postData<city>(
+            const { data: result, error, status } = await fetchFunc<city>(
                 `cities`,
                 "post",
                 ({
@@ -42,6 +42,7 @@ export default function AddCity({close, fetchData} : {close: () => void; fetchDa
             close()
             setLoading(false)
             fetchData()
+            setName("")
         }
 
 

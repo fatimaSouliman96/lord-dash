@@ -1,6 +1,6 @@
 import { MdAddCircle } from "react-icons/md";
 import { useState } from "react";
-import { postData } from "../../api/postData";
+import { fetchFunc } from "../../api/fetchData";
 import toast from "react-hot-toast";
 import type { Provider, Package } from "../../types/types";
 
@@ -17,13 +17,13 @@ export default function AddProvider({
   const [address, setAddress] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<string>();
   const [packageId, setPackageId] = useState<number>();
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.files[0]);
+      setImage(e.target.value);
     }
   };
 
@@ -44,10 +44,17 @@ export default function AddProvider({
     console.log(formData)
     setLoading(true);
     try {
-      const { data: result, error, status } = await postData<Provider>(
+      const { data: result, error, status } = await fetchFunc<Provider>(
         "providers",
         "post",
-        formData
+        {
+          name: name,
+          address: address,
+          phone: phone,
+          description: description,
+          image: image,
+          package_id: packageId
+        }
       );
 
       if (status === 201 && result) {
@@ -70,6 +77,12 @@ export default function AddProvider({
       console.error("Exception:", err);
     } finally {
       setLoading(false);
+      setAddress("")
+      setDescription("")
+      setImage("")
+      setName("")
+      setPackageId(0)
+      setPhone("")
     }
   };
 
@@ -129,12 +142,12 @@ export default function AddProvider({
 
       {/* الصورة */}
       <div className="flex flex-col text-right gap-1 pt-4">
-        <label htmlFor="image">صورة المزود</label>
+        <label htmlFor="image">رابط صورة المزود</label>
         <input
           onChange={handleFileChange}
           id="image"
-          type="file"
-          accept="image/*"
+          value={image}
+          type="url"
           className="text-right outline-gray-300 p-2 text-blue-950 border border-gray-200 shadow rounded-xl"
         />
       </div>
@@ -148,7 +161,7 @@ export default function AddProvider({
           value={packageId}
           className="text-right outline-gray-300 p-2 text-blue-950 h-10 border border-gray-200 shadow rounded-xl"
         >
-          <option value="">اختر الباقة</option>
+          <option value={0}>اختر الباقة</option>
           {packages.map((pkg) => (
             <option value={pkg.id} key={pkg.id}>
               {pkg.name}
