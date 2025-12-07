@@ -22,12 +22,18 @@ export default function AddProvider({
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.value);
-    }
+     setImage(e.target.value);
   };
 
   const handleSubmit = async () => {
+    console.log({
+      name,
+      address,
+      phone,
+      description,
+      image,
+      packageId
+    })
     if (!name || !address || !phone || !description || !image || !packageId) {
       toast.error("يرجى تعبئة جميع الحقول");
       return;

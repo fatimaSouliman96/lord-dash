@@ -19,7 +19,7 @@ export default function EditProvider({
   const [address, setAddress] = useState<string>(provider.address || "");
   const [phone, setPhone] = useState<string>(provider.phone || "");
   const [description, setDescription] = useState<string>(provider.description || "");
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<string>(provider.image || "");
   const [packageId, setPackageId] = useState<number>(provider.package_id || 0);
   const [loading, setLoading] = useState(false);
 
@@ -142,7 +142,7 @@ export default function EditProvider({
         <input
           onChange={handleFileChange}
           id="image"
-          value={image}
+          defaultValue={image}
           type="url"
           className="text-right outline-gray-300 p-2 text-blue-950 border border-gray-200 shadow rounded-xl"
         />
